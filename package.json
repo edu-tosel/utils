@@ -1,17 +1,18 @@
 {
-  "name": "utils",
+  "name": "@edu-tosel/utils",
   "version": "0.0.0",
   "description": "TOSEL Typescript utils",
   "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.build.json --noEmit false",
+    "build-publish": "npm run build && node setupPackage.js && cd dist && npm publish",
+    "test": "ts-node src/test.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/edu-tosel/utils.git"
+    "url": "git+ssh://git@github.com/edu-tosel/utils.git"
   },
   "author": "International TOSEL Committee",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/edu-tosel/utils/issues"
   },
