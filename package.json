@@ -1,6 +1,6 @@
 {
   "name": "@edu-tosel/utils",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "TOSEL Typescript utils",
   "main": "src/index.ts",
   "scripts": {
