@@ -2,7 +2,7 @@
   "name": "@edu-tosel/utils",
   "version": "0.0.1",
   "description": "TOSEL Typescript utils",
-  "main": "src/index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json --noEmit false",
     "build-publish": "npm run build && node setupPackage.js && cd dist && npm publish",
@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/edu-tosel/utils/issues"
   },
-  "homepage": "https://github.com/edu-tosel/utils#readme"
+  "homepage": "https://github.com/edu-tosel/utils#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9"
+  }
 }
