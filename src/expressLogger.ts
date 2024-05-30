@@ -1,4 +1,4 @@
-export default async function expressLogger() {
+export default async function getExpressLoggerRouter() {
   const { Router } = await import("express");
   const morgan = await import("morgan");
 
@@ -12,4 +12,5 @@ export default async function expressLogger() {
       "[:remote-addr - :remote-user] [:local-time] :method :url HTTP/:http-version :status :response-time ms"
     )
   );
+  return logRouter;
 }

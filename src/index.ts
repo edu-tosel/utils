@@ -1,7 +1,7 @@
-import expressLogger from "./expressLogger";
+import getExpressLoggerRouter from "./expressLogger";
 import fetchUtil from "./fetch";
 import createIsAdminIp from "./isAdminIp";
 import KST from "./kst";
 import unixTimestamp from "./unixTimestamp";
 
-export { fetchUtil, createIsAdminIp, KST, unixTimestamp, expressLogger };
+export { fetchUtil, createIsAdminIp, KST, unixTimestamp, getExpressLoggerRouter };
