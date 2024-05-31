@@ -5,6 +5,7 @@ function main() {
   const packageJsonPath = path.join(__dirname, "package.json");
   const distPath = path.join(__dirname, "dist");
   const readmePath = path.join(__dirname, "README.md");
+  const licencePath = path.join(__dirname, "LICENSE");
 
   if (!fs.existsSync(distPath)) {
     fs.mkdirSync(distPath);
@@ -22,6 +23,7 @@ function main() {
   const versionFilePath = path.join(distPath, "version.txt");
   const npmignorePath = path.join(distPath, ".npmignore");
   const distReadmePath = path.join(distPath, "README.md");
+  const distLicencePath = path.join(distPath, "LICENSE");
 
   fs.writeFileSync(
     distPackageJsonPath,
@@ -34,6 +36,9 @@ function main() {
   }
   if (fs.existsSync(readmePath)) {
     fs.copyFileSync(readmePath, distReadmePath);
+  }
+  if (fs.existsSync(licencePath)) {
+    fs.copyFileSync(licencePath, distLicencePath);
   }
 }
 
