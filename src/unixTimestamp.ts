@@ -13,6 +13,18 @@ const to = (date: Date): number => Math.floor(date.getTime() / 1000);
  * @example unixTimestamp.from(1716426733) // new Date("2024-05-23T00:00:00.000Z")
  */
 const from = (timestamp: number): Date => new Date(timestamp * 1000);
-const unixTimestamp = { to, from };
+
+/**
+ * 현재 시간을 Unix Timestamp로 반환합니다.
+ */
+const now = () => to(new Date());
+const unixTimestamp = {
+  to,
+  toTimestamp: to,
+  from,
+  fromTimestamp: from,
+  now,
+  nowTimestamp: now,
+};
 
 export default unixTimestamp;
