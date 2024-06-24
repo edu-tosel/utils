@@ -1,6 +1,5 @@
-
 /**
- * 
+ *
  * @description Admin IP를 확인하는 함수를 생성합니다
  * @param ipCheckUri Admin IP를 확인 할수 있는 URI (필수)
  * @returns  `isAdminIp` 함수
@@ -62,17 +61,17 @@ function createIsAdminIp({
     if (acceptLocalhost && (ip === "::1" || ip === "255.255.255.255"))
       return true;
     try {
-      if (useCache && cache[ip] !== undefined) return cache[ip];
+      if (useCache && cache[ip] !== undefined) return cache[ip] as boolean;
       const res = await fetch(ipCheckUri + "?ip=" + ip);
       if (!res.ok) return false;
       const data = await res.json();
+      const { success } = data;
       if (useCache) {
-        cache[ip] = data.success as boolean;
+        cache[ip] = success as boolean;
         setTimeout(() => {
           cache[ip] = undefined;
         }, cacheTimeout);
       }
-      const { success } = data;
       if (typeof success == "boolean") return success;
       if (logError) console.error("Invalid response from server: ", data);
       if (throwError) throw new Error("Invalid response from server");
