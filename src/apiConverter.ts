@@ -3,10 +3,13 @@ import unixTimestamp from "./unixTimestamp";
 export interface ObjectInterface {
   createdAt?: Date;
   updatedAt?: Date;
+  [key: string]: any; // 추가된 속성
 }
+
 export interface ApiInterface {
   createdAt?: number;
   updatedAt?: number;
+  [key: string]: any; // 추가된 속성
 }
 
 export type ToApi<T> = {
@@ -35,12 +38,15 @@ export const toApi: <T extends ObjectInterface, U extends ToApi<T>>(
     const value = object[key];
     if ((key === "createdAt" || key === "updatedAt") && value instanceof Date) {
       a[key] = unixTimestamp.to(value) as U[typeof key];
+    } else if (/^is[A-Z]/.test(key) && typeof value === "number") {
+      a[key] = (value === 1 ? true : false) as U[typeof key];
     } else {
       a[key] = value as any;
     }
   }
   return a;
 };
+
 export const fromApi: <T extends ApiInterface, U extends FromApi<T>>(
   object: T
 ) => U = <
@@ -58,14 +64,15 @@ export const fromApi: <T extends ApiInterface, U extends FromApi<T>>(
       typeof value === "number"
     ) {
       result[key as keyof T] = unixTimestamp.from(value) as any;
+    } else if (/^is[A-Z]/.test(key) && typeof value === "boolean") {
+      result[key as keyof T] = (value ? 1 : 0) as any;
     } else {
       result[key as keyof T] = value as any;
     }
   }
-
   return result;
 };
 
-const createApiConverter = <T extends ObjectInterface, U extends ApiInterface>(dateKeys:string[]) => {
-  
-}
+const createApiConverter = <T extends ObjectInterface, U extends ApiInterface>(
+  dateKeys: string[]
+) => {};
