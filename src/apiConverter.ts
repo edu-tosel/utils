@@ -3,13 +3,13 @@ import unixTimestamp from "./unixTimestamp";
 export interface ObjectInterface {
   createdAt?: Date;
   updatedAt?: Date;
-  [key: string]: any; // 추가된 속성
+  [key: string]: any;
 }
 
 export interface ApiInterface {
   createdAt?: number;
   updatedAt?: number;
-  [key: string]: any; // 추가된 속성
+  [key: string]: any;
 }
 
 export type ToApi<T> = {
