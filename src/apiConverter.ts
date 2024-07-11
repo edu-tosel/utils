@@ -68,7 +68,7 @@ export const fromApi: <T extends ApiInterface, U extends FromApi<T>>(
   options?: { changeBoolean?: boolean }
 ) => U = <
   T extends FromApi<U>,
-  U extends { createdAt?: number; updatedAt?: number }
+  U extends { createdAt?: number; updatedAt?: number; expiredAt?: number }
 >(
   object: U,
   options: { changeBoolean?: boolean } = { changeBoolean: false }
