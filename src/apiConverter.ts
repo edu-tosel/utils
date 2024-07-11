@@ -3,25 +3,21 @@ import unixTimestamp from "./unixTimestamp";
 export interface ObjectInterface {
   createdAt?: Date;
   updatedAt?: Date;
-  expiredAt?: Date;
   [key: string]: any;
 }
 
 export interface ApiInterface {
   createdAt?: number;
   updatedAt?: number;
-  expiredAt?: number;
   [key: string]: any;
 }
 
 export type ToApi<T> = {
-  [K in keyof T]: K extends "createdAt" | "updatedAt" | "expiredAt"
-    ? number
-    : T[K];
+  [K in keyof T]: K extends "createdAt" | "updatedAt" ? number : T[K];
 };
 export type FromApi<T> = {
   [K in keyof T]: T[K] extends number
-    ? K extends "createdAt" | "updatedAt" | "expiredAt"
+    ? K extends "createdAt" | "updatedAt"
       ? Date
       : number
     : T[K];
@@ -35,20 +31,14 @@ export type FromApi<T> = {
 export const toApi: <T extends ObjectInterface, U extends ToApi<T>>(
   object: T,
   options?: { changeBoolean?: boolean }
-) => U = <
-  T extends { createdAt?: Date; updatedAt?: Date; expiredAt?: Date },
-  U extends ToApi<T>
->(
+) => U = <T extends { createdAt?: Date; updatedAt?: Date }, U extends ToApi<T>>(
   object: T,
   options: { changeBoolean?: boolean } = { changeBoolean: false }
 ) => {
   let a = {} as U;
   for (const key in object) {
     const value = object[key];
-    if (
-      (key === "createdAt" || key === "updatedAt" || key === "expiredAt") &&
-      value instanceof Date
-    ) {
+    if ((key === "createdAt" || key === "updatedAt") && value instanceof Date) {
       a[key] = unixTimestamp.to(value) as U[typeof key];
     } else if (
       options.changeBoolean &&
@@ -68,7 +58,7 @@ export const fromApi: <T extends ApiInterface, U extends FromApi<T>>(
   options?: { changeBoolean?: boolean }
 ) => U = <
   T extends FromApi<U>,
-  U extends { createdAt?: number; updatedAt?: number; expiredAt?: number }
+  U extends { createdAt?: number; updatedAt?: number }
 >(
   object: U,
   options: { changeBoolean?: boolean } = { changeBoolean: false }
@@ -78,7 +68,7 @@ export const fromApi: <T extends ApiInterface, U extends FromApi<T>>(
   for (const key in object) {
     const value = object[key];
     if (
-      (key === "createdAt" || key === "updatedAt" || key === "expiredAt") &&
+      (key === "createdAt" || key === "updatedAt") &&
       typeof value === "number"
     ) {
       result[key as keyof T] = unixTimestamp.from(value) as any;
