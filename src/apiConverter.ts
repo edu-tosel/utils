@@ -35,10 +35,7 @@ export type FromApi<T> = {
 export const toApi: <T extends ObjectInterface, U extends ToApi<T>>(
   object: T,
   options?: { changeBoolean?: boolean }
-) => U = <
-  T extends { createdAt?: Date; updatedAt?: Date; expiredAt?: Date },
-  U extends ToApi<T>
->(
+) => U = <T extends { createdAt?: Date; updatedAt?: Date }, U extends ToApi<T>>(
   object: T,
   options: { changeBoolean?: boolean } = { changeBoolean: false }
 ) => {
