@@ -3,25 +3,21 @@ import unixTimestamp from "./unixTimestamp";
 export interface ObjectInterface {
   createdAt?: Date;
   updatedAt?: Date;
-  expiredAt?: Date;
   [key: string]: any;
 }
 
 export interface ApiInterface {
   createdAt?: number;
   updatedAt?: number;
-  expiredAt?: number;
   [key: string]: any;
 }
 
 export type ToApi<T> = {
-  [K in keyof T]: K extends "createdAt" | "updatedAt" | "expiredAt"
-    ? number
-    : T[K];
+  [K in keyof T]: K extends "createdAt" | "updatedAt" ? number : T[K];
 };
 export type FromApi<T> = {
   [K in keyof T]: T[K] extends number
-    ? K extends "createdAt" | "updatedAt" | "expiredAt"
+    ? K extends "createdAt" | "updatedAt"
       ? Date
       : number
     : T[K];
@@ -42,10 +38,7 @@ export const toApi: <T extends ObjectInterface, U extends ToApi<T>>(
   let a = {} as U;
   for (const key in object) {
     const value = object[key];
-    if (
-      (key === "createdAt" || key === "updatedAt" || key === "expiredAt") &&
-      value instanceof Date
-    ) {
+    if ((key === "createdAt" || key === "updatedAt") && value instanceof Date) {
       a[key] = unixTimestamp.to(value) as U[typeof key];
     } else if (
       options.changeBoolean &&
@@ -75,7 +68,7 @@ export const fromApi: <T extends ApiInterface, U extends FromApi<T>>(
   for (const key in object) {
     const value = object[key];
     if (
-      (key === "createdAt" || key === "updatedAt" || key === "expiredAt") &&
+      (key === "createdAt" || key === "updatedAt") &&
       typeof value === "number"
     ) {
       result[key as keyof T] = unixTimestamp.from(value) as any;
