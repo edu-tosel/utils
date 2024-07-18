@@ -8,6 +8,7 @@ import {
 } from "./apiConverter";
 import catchAsyncErrors from "./catchAsyncErrors";
 import { createMap, createMapObject } from "./createMap";
+import { isAllowedIpMiddleware } from "./expressAdminMiddleware";
 import getExpressLoggerRouter from "./expressLogger";
 import fetchUtil from "./fetch";
 import createIsAdminIp from "./isAdminIp";
@@ -31,4 +32,5 @@ export {
   getExpressLoggerRouter,
   createMapObject,
   createMap,
+  isAllowedIpMiddleware,
 };
