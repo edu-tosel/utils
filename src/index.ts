@@ -14,8 +14,8 @@ import fetchUtil from "./fetch";
 import createIsAdminIp from "./isAdminIp";
 import KST from "./kst";
 import nodeRuntimeCheck from "./nodeRuntimeCheck";
+import { range, idRangeByResultSetHeader } from "./range";
 import unixTimestamp from "./unixTimestamp";
-
 export {
   ApiInterface,
   FromApi,
@@ -33,4 +33,6 @@ export {
   createMapObject,
   createMap,
   isAllowedIpMiddleware,
+  range,
+  idRangeByResultSetHeader,
 };
