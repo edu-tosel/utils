@@ -1,16 +1,20 @@
-export default async function getExpressLoggerRouter({
-  reverseDnsStore,
-}: {
-  /**
-   * reverseDnsStore is a key-value store that maps IP addresses to domain names.
-   * You can change from IP address to domain name.
-   * @example
-   * {
-   *  "127.0.0.1": "localhost"
-   * }
-   */
-  reverseDnsStore: Record<string, string>;
-}) {
+export default async function getExpressLoggerRouter(
+  {
+    reverseDnsStore,
+  }: {
+    /**
+     * reverseDnsStore is a key-value store that maps IP addresses to domain names.
+     * You can change from IP address to domain name.
+     * @example
+     * {
+     *  "127.0.0.1": "localhost"
+     * }
+     */
+    reverseDnsStore: Record<string, string>;
+  } = {
+    reverseDnsStore: {},
+  }
+) {
   const { Router } = await import("express");
   const morgan = await import("morgan");
 
