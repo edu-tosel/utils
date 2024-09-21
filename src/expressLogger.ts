@@ -67,7 +67,7 @@ export default async function getExpressLoggerRouter(
   });
   logRouter.use(
     morgan.default(
-      "[:remote-addr] [:local-time] :user-agent :method :url HTTP/:http-version :status :response-time ms"
+      "[:remote-addr] [:local-time] :method :url HTTP/:http-version :status :response-time ms"
     )
   );
   return logRouter;
