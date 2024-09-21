@@ -1,6 +1,7 @@
 export default async function getExpressLoggerRouter(
   {
     reverseDnsStore,
+    timeOptions,
   }: {
     /**
      * reverseDnsStore is a key-value store that maps IP addresses to domain names.
@@ -11,8 +12,32 @@ export default async function getExpressLoggerRouter(
      * }
      */
     reverseDnsStore: Record<string, string>;
+    /**
+     * timeOptions is a option for Intl.DateTimeFormat.
+     * You can change the time format.
+     * @default
+     * {
+     *   timeZone: "Asia/Seoul",
+     *   day: "2-digit",
+     *   month: "2-digit",
+     *   year: undefined,
+     *   hour: "2-digit",
+     *   minute: "2-digit",
+     *   second: "2-digit",
+     * }
+     */
+    timeOptions?: Intl.DateTimeFormatOptions;
   } = {
     reverseDnsStore: {},
+    timeOptions: {
+      timeZone: "Asia/Seoul",
+      day: "2-digit",
+      month: "2-digit",
+      year: undefined,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    },
   }
 ) {
   const { Router } = await import("express");
@@ -21,7 +46,7 @@ export default async function getExpressLoggerRouter(
   const logRouter = Router();
   morgan.token("local-time", (req) => {
     const now = new Date();
-    return now.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+    return now.toLocaleString("ko-KR", timeOptions);
   });
   morgan.token("remote-addr", (req) => {
     /**
@@ -42,7 +67,7 @@ export default async function getExpressLoggerRouter(
   });
   logRouter.use(
     morgan.default(
-      "[:remote-addr - :remote-user] [:local-time] :method :url HTTP/:http-version :status :response-time ms"
+      "[:remote-addr] [:local-time] :user-agent :method :url HTTP/:http-version :status :response-time ms"
     )
   );
   return logRouter;
