@@ -9,7 +9,7 @@ interface KST {
   minute: number;
   second: number;
 }
-export default function KST(date?: Date): KST {
+export function KST(date?: Date): KST {
   date = date ?? new Date();
   const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
@@ -31,3 +31,17 @@ export default function KST(date?: Date): KST {
     second,
   };
 }
+export const baseDateTimeFormatOptions = {
+  timeZone: "Asia/Seoul",
+  day: "2-digit",
+  month: "2-digit",
+  year: undefined,
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+} as const;
+
+export const toKstString = (date?: Date): string => {
+  date = date ?? new Date();
+  return date.toLocaleString("ko-KR", baseDateTimeFormatOptions);
+};
