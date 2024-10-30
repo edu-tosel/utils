@@ -15,12 +15,15 @@ import createIsAdminIp from "./isAdminIp";
 import { KST, baseDateTimeFormatOptions, toKstString } from "./kst";
 import nodeRuntimeCheck from "./nodeRuntimeCheck";
 import { range, idRangeByResultSetHeader } from "./range";
+import { PromiseResult, Result } from "./types";
 import unixTimestamp from "./unixTimestamp";
 export {
   ApiInterface,
   FromApi,
   ObjectInterface,
   ToApi,
+  PromiseResult,
+  Result,
   fromApi,
   toApi,
   catchAsyncErrors,
