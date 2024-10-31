@@ -1,3 +1,4 @@
+import ageUtil from "./age";
 import {
   ApiInterface,
   FromApi,
@@ -40,4 +41,5 @@ export {
   isAllowedIpMiddleware,
   range,
   idRangeByResultSetHeader,
+  ageUtil,
 };
