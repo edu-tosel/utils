@@ -18,6 +18,7 @@ import nodeRuntimeCheck from "./nodeRuntimeCheck";
 import { range, idRangeByResultSetHeader } from "./range";
 import { PromiseResult, Result } from "./types";
 import unixTimestamp from "./unixTimestamp";
+const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
 export {
   ApiInterface,
   FromApi,
@@ -33,7 +34,28 @@ export {
   KST,
   baseDateTimeFormatOptions,
   toKstString,
+  /**
+   * @deprecated Use `(to|from|now)Timestamp` instead.
+   * @example
+   * ```typescript
+   * import { 
+   *   unixTimestamp,
+   *   toTimestamp,
+   *   fromTimestamp,
+   *   nowTimestamp 
+   * } from "@edu-tosel/utils";
+   * // const now = unixTimestamp.now();
+   * const now = nowTimestamp();
+   * // const date = unixTimestamp.from(now);
+   * const date = fromTimestamp(now);
+   * // const timestamp = unixTimestamp.to(date);
+   * const timestamp = toTimestamp(date);
+   * ```
+   */
   unixTimestamp,
+  toTimestamp,
+  fromTimestamp,
+  nowTimestamp,
   nodeRuntimeCheck,
   getExpressLoggerRouter,
   createMapObject,
