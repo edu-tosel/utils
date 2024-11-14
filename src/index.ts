@@ -8,7 +8,7 @@ import {
   toApi,
 } from "./apiConverter";
 import catchAsyncErrors from "./catchAsyncErrors";
-import { createMap, createMapObject } from "./createMap";
+import { createMap, createMapObject, createRecord } from "./createMap";
 import { isAllowedIpMiddleware } from "./expressAdminMiddleware";
 import getExpressLoggerRouter from "./expressLogger";
 import fetchUtil from "./fetch";
@@ -38,11 +38,11 @@ export {
    * @deprecated Use `(to|from|now)Timestamp` instead.
    * @example
    * ```typescript
-   * import { 
+   * import {
    *   unixTimestamp,
    *   toTimestamp,
    *   fromTimestamp,
-   *   nowTimestamp 
+   *   nowTimestamp
    * } from "@edu-tosel/utils";
    * // const now = unixTimestamp.now();
    * const now = nowTimestamp();
@@ -60,6 +60,7 @@ export {
   getExpressLoggerRouter,
   createMapObject,
   createMap,
+  createRecord,
   isAllowedIpMiddleware,
   range,
   idRangeByResultSetHeader,
