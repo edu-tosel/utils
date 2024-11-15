@@ -18,6 +18,7 @@ import nodeRuntimeCheck from "./nodeRuntimeCheck";
 import { range, idRangeByResultSetHeader } from "./range";
 import { PromiseResult, Result } from "./types";
 import unixTimestamp from "./unixTimestamp";
+import { removeDuplicates } from "./malicious";
 const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
 export {
   ApiInterface,
@@ -65,4 +66,5 @@ export {
   range,
   idRangeByResultSetHeader,
   ageUtil,
+  removeDuplicates,
 };
