@@ -27,6 +27,12 @@ export default async function getExpressLoggerRouter({
    */
   timeOptions?: Intl.DateTimeFormatOptions;
 } = {}) {
+  if (typeof window !== "undefined") {
+    console.error(
+      "[Express Logger] This module is not supported in the browser environment."
+    );
+    return {} as never;
+  }
   const { Router } = await import("express");
   const morgan = await import("morgan");
   reverseDnsStore = reverseDnsStore || {};
