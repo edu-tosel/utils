@@ -151,9 +151,9 @@ export default async function getExpressLoggerRouter({
   const getSize = (size: number) => {
     if (Number.isNaN(size)) return "NaN";
     if (size < Size.KB) return `${size}B`;
-    if (size < Size.MB) return `${(size / 1024).toFixed(2)}KB`;
-    if (size < Size.GB) return `${(size / 1024 ** 2).toFixed(2)}MB`;
-    return `${(size / 1024 ** 3).toFixed(2)}GB`;
+    if (size < Size.MB) return `${(size / 1024).toFixed(2)}KiB`;
+    if (size < Size.GB) return `${(size / 1024 ** 2).toFixed(2)}MiB`;
+    return `${(size / 1024 ** 3).toFixed(2)}GiB`;
   };
   morgan.token("content-size", (req, res) => {
     if (!res.headersSent) return "-";
