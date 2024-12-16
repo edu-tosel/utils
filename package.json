@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/edu-tosel/utils#readme",
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "morgan": "^1.10.0",
-    "typescript": "^5.5.2"
+    "typescript": "^5.7.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
