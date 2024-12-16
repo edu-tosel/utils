@@ -1,6 +1,7 @@
 export default async function getExpressLoggerRouter({
   reverseDnsStore,
   timeOptions,
+  loggerOptions,
 }: {
   /**
    * reverseDnsStore is a key-value store that maps IP addresses to domain names.
@@ -26,6 +27,33 @@ export default async function getExpressLoggerRouter({
    * }
    */
   timeOptions?: Intl.DateTimeFormatOptions;
+  loggerOptions?: {
+    /**
+     * printHttpVersion is a option for print HTTP version. It will be overwrite by process environment variable `EXPRESS_LOGGER_PRINT_HTTP_VERSION`.
+     * @default false
+     */
+    printHttpVersion?: boolean;
+    /**
+     * printUserAgent is a option for print User Agent. It will be overwrite by process environment variable `EXPRESS_LOGGER_PRINT_USER_AGENT`.
+     * @default false
+     */
+    printUserAgent?: boolean;
+    /**
+     * decodeUrl is a option for decode URL. It will be overwrite by process environment variable `EXPRESS_LOGGER_DECODE_URL`.
+     * @default true
+     */
+    decodeUrl?: boolean;
+    /**
+     * printBodySize is a option for print body size. It will be overwrite by process environment variable `EXPRESS_LOGGER_PRINT_BODY_SIZE`.
+     * @default false
+     */
+    printBodySize?: boolean;
+    /**
+     * printBody is a option for print body. It will be overwrite by process environment variable `EXPRESS_LOGGER_PRINT_BODY`.
+     * @default false
+     */
+    printBody?: boolean;
+  };
 } = {}) {
   if (typeof window !== "undefined") {
     console.error(
@@ -35,6 +63,9 @@ export default async function getExpressLoggerRouter({
   }
   const { Router } = await import("express");
   const morgan = await import("morgan");
+  const {
+    default: { UAParser },
+  } = await import("ua-parser-js");
   reverseDnsStore = reverseDnsStore || {};
   timeOptions = timeOptions || {
     timeZone: "Asia/Seoul",
@@ -45,33 +76,128 @@ export default async function getExpressLoggerRouter({
     minute: "2-digit",
     second: "2-digit",
   };
+  const {
+    EXPRESS_LOGGER_PRINT_HTTP_VERSION,
+    EXPRESS_LOGGER_PRINT_USER_AGENT,
+    EXPRESS_LOGGER_DECODE_URL,
+    EXPRESS_LOGGER_PRINT_BODY_SIZE,
+    EXPRESS_LOGGER_PRINT_BODY,
+  } = process.env;
+  const parseProcessEnv = (
+    obj: Record<string, string | undefined>,
+    defaultOption: boolean = false
+  ) => {
+    const [[envName, value]] = Object.entries(obj);
+    if (value === undefined) return defaultOption;
+    if (value === "true") {
+      console.log(`[Express Logger Router] ${envName} is true`);
+      return true;
+    }
+    if (value === "false") {
+      console.log(`[Express Logger Router] ${envName} is false`);
+      return false;
+    }
+    console.log(
+      `Warning: [Express Logger Router] ${envName} is not a boolean, Please check the environment variable. (value: ${value})`
+    );
+    return defaultOption;
+  };
+  const printHttpVersion =
+    loggerOptions?.printHttpVersion ??
+    parseProcessEnv({ EXPRESS_LOGGER_PRINT_HTTP_VERSION });
+  const printUserAgent =
+    loggerOptions?.printUserAgent ??
+    parseProcessEnv({ EXPRESS_LOGGER_PRINT_USER_AGENT });
+  const decodeUrl =
+    loggerOptions?.decodeUrl ??
+    parseProcessEnv({ EXPRESS_LOGGER_DECODE_URL }, true);
+  const printBodySize =
+    loggerOptions?.printBodySize ??
+    parseProcessEnv({ EXPRESS_LOGGER_PRINT_BODY_SIZE });
+  const printBody =
+    loggerOptions?.printBody ?? parseProcessEnv({ EXPRESS_LOGGER_PRINT_BODY });
+  /**
+   *  from morgan source code
+   */
+  function getip(req: any): string | undefined {
+    return (
+      req.ip ||
+      req._remoteAddress ||
+      (req.connection && req.connection.remoteAddress) ||
+      undefined
+    );
+  }
 
-  const logRouter = Router();
   morgan.token("local-time", (req) => {
     const now = new Date();
     return now.toLocaleString("ko-KR", timeOptions);
   });
   morgan.token("remote-addr", (req) => {
-    /**
-     *  from morgan source code
-     */
-    function getip(req: any): string | undefined {
-      return (
-        req.ip ||
-        req._remoteAddress ||
-        (req.connection && req.connection.remoteAddress) ||
-        undefined
-      );
-    }
     const ip = getip(req);
     if (!ip) return "unknown";
-    else if (reverseDnsStore[ip]) return reverseDnsStore[ip];
-    else return ip;
+    const domain = reverseDnsStore[ip];
+    return domain ?? ip;
   });
-  logRouter.use(
-    morgan.default(
-      "[:remote-addr] [:local-time] :method :url HTTP/:http-version :status :response-time ms"
-    )
+  morgan.token("decoded-url", (req) =>
+    req.url ? decodeURIComponent(req.url) : req.url
   );
+  morgan.token("HTTP-version", (req) => "HTTP/" + req.httpVersion);
+  enum Size {
+    B = 1,
+    KB = 1024,
+    MB = 1024 ** 2,
+    GB = 1024 ** 3,
+  }
+  const getSize = (size: number) => {
+    if (Number.isNaN(size)) return "NaN";
+    if (size < Size.KB) return `${size}B`;
+    if (size < Size.MB) return `${(size / 1024).toFixed(2)}KB`;
+    if (size < Size.GB) return `${(size / 1024 ** 2).toFixed(2)}MB`;
+    return `${(size / 1024 ** 3).toFixed(2)}GB`;
+  };
+  morgan.token("content-size", (req, res) => {
+    if (!res.headersSent) return "-";
+    const contentLength = res.getHeader("content-length");
+    if (typeof contentLength === "string") {
+      const length = parseInt(contentLength, 10);
+      const size = getSize(length);
+      return size;
+    }
+    return "-";
+  });
+  morgan.token("user-client", (req) => {
+    const ua = req.headers["user-agent"];
+    const isWebBrowser = ua ? /^Mozilla\/5.0/.test(ua) : false;
+    if (!isWebBrowser) {
+      if (!ua) return "-";
+      return ua;
+    }
+    const parser = new UAParser(ua);
+    const { name, version } = parser.getBrowser();
+    if (!name) return ua;
+    if (!version) return name;
+    return `${name}:${version}`;
+  });
+  morgan.token("body", (req: any) => {
+    if (!printBody) return "\n-";
+    if (!req.body) return "\nCannot parse body";
+    return JSON.stringify(req.body);
+  });
+  const tokens = [
+    "[:remote-addr]",
+    "[:local-time]",
+    ":method",
+    decodeUrl ? ":decoded-url" : ":url",
+    printHttpVersion ? ":HTTP-version" : null,
+    ":status",
+    printBodySize ? ":content-size" : null,
+    ":response-time",
+    "ms",
+    printUserAgent ? ":user-client" : null,
+  ];
+  const filteredTokens = tokens.filter((token) => token !== null);
+  const script = filteredTokens.join(" ");
+  const logRouter = Router();
+  logRouter.use(morgan.default(script));
   return logRouter;
 }
