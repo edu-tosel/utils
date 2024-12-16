@@ -179,8 +179,8 @@ export default async function getExpressLoggerRouter({
     return `${name}:${version}`;
   });
   morgan.token("body", (req) => {
-    if (!printBody) return "\n-";
-    if (req.method === "GET") return "\n-";
+    if (!printBody) return "";
+    if (req.method === "GET") return "";
     const body = (req as any).body;
     if (!body) return "\nCannot parse body";
     return "\n" + JSON.stringify(body, null, 2);
