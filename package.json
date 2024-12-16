@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json --noEmit false",
     "build-publish": "npm run build && node setupPackage.js && cd dist && npm publish",
+    "upload": "npm version patch && npm run build-publish && git push --follow-tags",
     "test": "ts-node src/test.ts"
   },
   "repository": {
