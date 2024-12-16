@@ -183,7 +183,7 @@ export default async function getExpressLoggerRouter({
     if (req.method === "GET") return "";
     const body = (req as any).body;
     if (!body) return "\nCannot parse body";
-    return "\n" + JSON.stringify(body, null, 2);
+    return "\nRequest Body\n" + JSON.stringify(body, null, 2);
   });
   const tokens = [
     "[:remote-addr]",
