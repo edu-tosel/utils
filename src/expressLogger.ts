@@ -178,10 +178,12 @@ export default async function getExpressLoggerRouter({
     if (!version) return name;
     return `${name}:${version}`;
   });
-  morgan.token("body", (req: any) => {
+  morgan.token("body", (req) => {
     if (!printBody) return "\n-";
-    if (!req.body) return "\nCannot parse body";
-    return JSON.stringify(req.body);
+    if (req.method === "GET") return "\n-";
+    const body = (req as any).body;
+    if (!body) return "\nCannot parse body";
+    return "\n" + JSON.stringify(body, null, 2);
   });
   const tokens = [
     "[:remote-addr]",
