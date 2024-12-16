@@ -194,6 +194,7 @@ export default async function getExpressLoggerRouter({
     ":response-time",
     "ms",
     printUserAgent ? ":user-client" : null,
+    printBody ? ":body" : null,
   ];
   const filteredTokens = tokens.filter((token) => token !== null);
   const script = filteredTokens.join(" ");
