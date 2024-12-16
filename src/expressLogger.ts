@@ -138,9 +138,11 @@ export default async function getExpressLoggerRouter({
     const domain = reverseDnsStore[ip];
     return domain ?? ip;
   });
-  morgan.token("decoded-url", (req) =>
-    req.url ? decodeURIComponent(req.url) : req.url
-  );
+  morgan.token("decoded-url", (req: any) => {
+    const url = req.originalUrl || req.url;
+    if (url) return decodeURIComponent(url);
+    return undefined;
+  });
   morgan.token("HTTP-version", (req) => "HTTP/" + req.httpVersion);
   enum Size {
     B = 1,
