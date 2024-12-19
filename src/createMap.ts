@@ -1,4 +1,5 @@
 /**
+ * @deprecated Use `createRecord` instead.
  * Use `createRecord` instead of this function.
  */
 export function createMapObject<
