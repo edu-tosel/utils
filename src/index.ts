@@ -13,7 +13,13 @@ import { isAllowedIpMiddleware } from "./expressAdminMiddleware";
 import getExpressLoggerRouter from "./expressLogger";
 import fetchUtil from "./fetch";
 import createIsAdminIp from "./isAdminIp";
-import { KST, baseDateTimeFormatOptions, toKstString } from "./kst";
+import {
+  KST,
+  baseDateTimeFormatOptions,
+  toKstString,
+  readKstDayInfo,
+  readKstString,
+} from "./kst";
 import nodeRuntimeCheck from "./nodeRuntimeCheck";
 import { range, idRangeByResultSetHeader } from "./range";
 import { PromiseResult, Result } from "./types";
@@ -35,6 +41,8 @@ export {
   KST,
   baseDateTimeFormatOptions,
   toKstString,
+  readKstDayInfo,
+  readKstString,
   /**
    * @deprecated Use `(to|from|now)Timestamp` instead.
    * @example

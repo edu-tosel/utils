@@ -9,6 +9,9 @@ interface KST {
   minute: number;
   second: number;
 }
+/**
+ * @deprecated Use `readKstDayInfo` instead.
+ */
 export function KST(date?: Date): KST {
   date = date ?? new Date();
   const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
@@ -31,6 +34,12 @@ export function KST(date?: Date): KST {
     second,
   };
 }
+
+export const readKstDayInfo = (date?: Date) => {
+  const { year, month, date: dateNumber, day, hour } = KST(date);
+  return { year, month, date: dateNumber, day, hour };
+};
+
 export const baseDateTimeFormatOptions = {
   timeZone: "Asia/Seoul",
   day: "2-digit",
@@ -41,7 +50,34 @@ export const baseDateTimeFormatOptions = {
   second: "2-digit",
 } as const;
 
+/**
+ * @deprecated Use `fromDate` instead.
+ */
 export const toKstString = (date?: Date): string => {
   date = date ?? new Date();
   return date.toLocaleString("ko-KR", baseDateTimeFormatOptions);
 };
+/**
+ * @example
+ * ```ts
+ * const date = new Date(Date.UTC(2024, 12, 11, 9)); // 2024-12-11T09:00:00.000Z
+ * const formatted = readKstString(date);
+ * // Hour is 24 hour clock system
+ * console.log(formatted); // 2024-12-11 18:00:00
+ * ```
+ */
+export const readKstString = (date?: Date) =>
+  (date ?? new Date())
+    .toLocaleString("ko-KR", {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    })
+    .replace(". ", "-")
+    .replace(". ", "-")
+    .replace(". ", " ");
