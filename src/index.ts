@@ -22,7 +22,13 @@ import {
 } from "./kst";
 import nodeRuntimeCheck from "./nodeRuntimeCheck";
 import { range, idRangeByResultSetHeader } from "./range";
-import { PromiseResult, Result } from "./types";
+import {
+  PromiseResult,
+  Result,
+  FailResult,
+  SuccessResult,
+  UndefinedToNull,
+} from "./types";
 import unixTimestamp from "./unixTimestamp";
 import { removeDuplicates } from "./malicious";
 const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
@@ -33,6 +39,9 @@ export {
   ToApi,
   PromiseResult,
   Result,
+  FailResult,
+  SuccessResult,
+  UndefinedToNull,
   fromApi,
   toApi,
   catchAsyncErrors,
