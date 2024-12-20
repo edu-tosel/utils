@@ -63,3 +63,16 @@ export function createMap<
 >(arr: T[], key: U) {
   return arr.reduce((acc, cur) => acc.set(cur[key], cur), new Map<T[U], T>());
 }
+export const createGroup = <
+  U extends keyof T,
+  T extends { [index in U]: string | number }
+>(
+  array: T[],
+  key: U
+): Record<T[U], T[]> =>
+  array.reduce((record, item) => {
+    const keyValue = item[key];
+    if (record[keyValue]) record[keyValue].push(item);
+    else record[keyValue] = [item];
+    return record;
+  }, {} as any);
