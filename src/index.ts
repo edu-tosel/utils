@@ -8,7 +8,7 @@ import {
   toApi,
 } from "./apiConverter";
 import catchAsyncErrors from "./catchAsyncErrors";
-import { createMap, createMapObject, createRecord } from "./createMap";
+import { createMap, createMapObject, createRecord } from "./createObject";
 import { isAllowedIpMiddleware } from "./expressAdminMiddleware";
 import getExpressLoggerRouter from "./expressLogger";
 import fetchUtil from "./fetch";
