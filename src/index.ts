@@ -36,6 +36,7 @@ import {
 } from "./types";
 import unixTimestamp from "./unixTimestamp";
 import { removeDuplicates } from "./malicious";
+import levelUtil from "./level";
 const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
 export {
   ApiInterface,
@@ -90,4 +91,5 @@ export {
   idRangeByResultSetHeader,
   ageUtil,
   removeDuplicates,
+  levelUtil,
 };
