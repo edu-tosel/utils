@@ -12,13 +12,13 @@ export function createMapObject<
   }, {} as Record<T[U], T>);
 }
 /**
- * Creates a record (object) from an array of objects, using a specified key from each object as the record's key.
+ * 지정된 키를 각 객체에서 사용하여 배열의 객체들로부터 레코드(객체)를 생성합니다.
  *
- * @template U - The key of the objects in the array to be used as the record's key.
- * @template T - The type of the objects in the array.
- * @param {T[]} arr - The array of objects to be transformed into a record.
- * @param {U} key - The key to be used from each object as the record's key.
- * @returns - The resulting record where each key is a value from the specified key in the objects, and each value is the corresponding object.
+ * @template U - 배열의 객체에서 레코드의 키로 사용될 객체의 키.
+ * @template T - 배열에 포함된 객체들의 타입.
+ * @param {T[]} arr - 레코드로 변환될 객체들의 배열.
+ * @param {U} key - 각 객체에서 레코드의 키로 사용될 키.
+ * @returns - 각 키는 지정된 키 값으로부터 생성되고, 각 값은 해당 객체인 레코드가 반환됩니다.
  * @example
  * ```ts
  * const arr = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }];
@@ -28,6 +28,7 @@ export function createMapObject<
  * console.log(nameRecord); // { Alice: { id: 1, name: 'Alice' }, Bob: { id: 2, name: 'Bob' } }
  * ```
  */
+
 export function createRecord<
   U extends keyof T,
   T extends { [index in U]: string | number }
@@ -39,13 +40,13 @@ export function createRecord<
 }
 
 /**
- * Creates a map from an array of objects using a specified key.
+ * 지정된 키를 사용하여 객체 배열로부터 맵을 생성합니다.
  *
- * @template U - The key of the objects in the array.
- * @template T - The type of the objects in the array, which must have a property of type string or number indexed by U.
- * @param {T[]} arr - The array of objects to be converted into a map.
- * @param {U} key - The key to be used as the map key.
- * @returns - A map where the keys are the values of the specified key in the objects, and the values are the objects themselves.
+ * @template U - 배열의 객체에서 사용되는 키.
+ * @template T - 배열에 포함된 객체들의 타입, 이 객체는 U로 인덱싱된 string 또는 number 타입의 속성을 가져야 합니다.
+ * @param {T[]} arr - 맵으로 변환될 객체들의 배열.
+ * @param {U} key - 맵의 키로 사용될 키.
+ * @returns - 키는 지정된 키 값으로부터 생성되고, 값은 해당 객체인 맵이 반환됩니다.
  * @example
  * ```ts
  * const arr = [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }];
@@ -57,12 +58,36 @@ export function createRecord<
  * console.log(nameMap.get('Bob')); // { id: 2, name: 'Bob' }
  * ```
  */
+
 export function createMap<
   U extends keyof T,
   T extends { [index in U]: string | number }
 >(arr: T[], key: U) {
   return arr.reduce((acc, cur) => acc.set(cur[key], cur), new Map<T[U], T>());
 }
+/**
+ * 주어진 배열을 특정 키를 기준으로 그룹화하여 레코드를 생성합니다.
+ *
+ * @template U - 배열 객체에서 그룹화에 사용될 키.
+ * @template T - 배열에 포함된 객체들의 타입, 이 객체는 U로 인덱싱된 string 또는 number 타입의 속성을 가져야 합니다.
+ * @param {T[]} array - 그룹화할 객체들의 배열.
+ * @param {U} key - 그룹화에 사용될 키.
+ * @returns {Record<T[U], T[]>} - 각 키 값에 대해 해당하는 객체들이 배열로 묶인 레코드를 반환합니다.
+ * @example
+ * ```ts
+ * const arr = [
+ *   { id: 1, name: 'Alice' },
+ *   { id: 2, name: 'Bob' },
+ *   { id: 1, name: 'Charlie' }
+ * ];
+ * const groupedById = createGroup(arr, 'id');
+ * console.log(groupedById[1]);
+ * // [{ id: 1, name: 'Alice' }, { id: 1, name: 'Charlie' }]
+ * console.log(groupedById[2]);
+ * // [{ id: 2, name: 'Bob' }]
+ * ```
+ */
+
 export const createGroup = <
   U extends keyof T,
   T extends { [index in U]: string | number }
@@ -76,3 +101,39 @@ export const createGroup = <
     else record[keyValue] = [item];
     return record;
   }, {} as any);
+/**
+ * 주어진 배열을 특정 키를 기준으로 그룹화하여 맵을 생성합니다.
+ *
+ * @template U - 배열 객체에서 그룹화에 사용될 키.
+ * @template T - 배열에 포함된 객체들의 타입, 이 객체는 U로 인덱싱된 string 또는 number 타입의 속성을 가져야 합니다.
+ * @param {T[]} array - 그룹화할 객체들의 배열.
+ * @param {U} key - 그룹화에 사용될 키.
+ * @returns {Map<T[U], T[]>} - 각 키 값에 대해 해당하는 객체들이 배열로 묶인 맵을 반환합니다.
+ * @example
+ * ```ts
+ * const arr = [
+ *   { id: 1, name: 'Alice' },
+ *   { id: 2, name: 'Bob' },
+ *   { id: 1, name: 'Charlie' }
+ * ];
+ * const groupedById = createGroupMap(arr, 'id');
+ * console.log(groupedById.get(1));
+ * // [{ id: 1, name: 'Alice' }, { id: 1, name: 'Charlie' }]
+ * console.log(groupedById.get(2));
+ * // [{ id: 2, name: 'Bob' }]
+ * ```
+ */
+
+export const createGroupMap = <
+  U extends keyof T,
+  T extends { [index in U]: string | number }
+>(
+  array: T[],
+  key: U
+): Map<T[U], T[]> =>
+  array.reduce((map, item) => {
+    const keyValue = item[key];
+    if (map.has(keyValue)) map.get(keyValue)?.push(item);
+    else map.set(keyValue, [item]);
+    return map;
+  }, new Map<T[U], T[]>());
