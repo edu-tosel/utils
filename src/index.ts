@@ -37,6 +37,7 @@ import {
 import unixTimestamp from "./unixTimestamp";
 import { removeDuplicates } from "./malicious";
 import levelUtil from "./level";
+import asyncUtils from "./async";
 const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
 export {
   ApiInterface,
@@ -89,7 +90,8 @@ export {
   isAllowedIpMiddleware,
   range,
   idRangeByResultSetHeader,
-  ageUtil,
   removeDuplicates,
+  ageUtil,
   levelUtil,
+  asyncUtils,
 };
