@@ -4,6 +4,7 @@
  * @param ipCheckUri Admin IP를 확인 할수 있는 URI (필수)
  * @returns  `isAdminIp` 함수
  * @example
+ * @deprecated Use another one instead.
  * ```ts
  * const ipCheckUri = "https://admin-ip-checker.com/check-ip";
  * const { isAdminIp } = createIsAdminIp({ ipCheckUri });
@@ -57,6 +58,9 @@ function createIsAdminIp({
   acceptLocalhost = acceptLocalhost ?? true;
   throwError = throwError ?? false;
   logError = logError ?? false;
+  /**
+   * @deprecated
+   */
   const isAdminIp = async (ip: string) => {
     if (acceptLocalhost && (ip === "::1" || ip === "255.255.255.255"))
       return true;
