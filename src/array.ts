@@ -10,33 +10,9 @@
  */
 const createArrayWithShallowCopy = <T>(array: T[]): T[] => [...array];
 
-/**
- * @description 주어진 배열을 오름차순으로 정렬합니다.
- * @example
- * ```ts
- * const arr = [3, 1, 2];
- * const sortedArr = createAscendingArray(arr);
- * console.log(sortedArr);
- * // [1, 2, 3]
- * ```
- */
 const createAscendingArray = <T extends number>(array: T[]): T[] =>
   createArrayWithShallowCopy(array).sort((a, b) => a - b);
 
-/**
- * @description 주어진 배열을 특정 키를 기준으로 오름차순으로 정렬합니다.
- * @example
- * ```ts
- * const users = [
- *   { id: 3, name: 'Alice' },
- *   { id: 1, name: 'Bob' },
- *   { id: 2, name: 'Charlie' }
- * ];
- * const sortedUsers = createAscendingArrayWithKey(users, 'id');
- * console.log(sortedUsers);
- * // [{ id: 1, name: 'Bob' }, { id: 2, name: 'Charlie' }, { id: 3, name: 'Alice' }]
- * ```
- */
 const createAscendingArrayWithKey = <
   T extends { [index in U]: number },
   U extends keyof T
@@ -46,8 +22,31 @@ const createAscendingArrayWithKey = <
 ): T[] => createArrayWithShallowCopy(array).sort((a, b) => a[key] - b[key]);
 
 const arrayUtils = {
-  createArrayWithShallowCopy,
+  /**
+   * @description 주어진 배열을 오름차순으로 정렬합니다.
+   * @example
+   * ```ts
+   * const arr = [3, 1, 2];
+   * const sortedArr = createAscendingArray(arr);
+   * console.log(sortedArr);
+   * // [1, 2, 3]
+   * ```
+   */
   createAscendingArray,
+  /**
+   * @description 주어진 배열을 특정 키를 기준으로 오름차순으로 정렬합니다.
+   * @example
+   * ```ts
+   * const users = [
+   *   { id: 3, name: 'Alice' },
+   *   { id: 1, name: 'Bob' },
+   *   { id: 2, name: 'Charlie' }
+   * ];
+   * const sortedUsers = createAscendingArrayWithKey(users, 'id');
+   * console.log(sortedUsers);
+   * // [{ id: 1, name: 'Bob' }, { id: 2, name: 'Charlie' }, { id: 3, name: 'Alice' }]
+   * ```
+   */
   createAscendingArrayWithKey,
 };
 

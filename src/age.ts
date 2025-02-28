@@ -84,6 +84,29 @@ function readKoreanAge(
   return age;
 }
 
-const ageUtil = { readInternationalAge, readKoreanAge, readYearAge };
+const ageUtil = {
+  /**
+   * 주어진 생년월일 문자열과 선택적인 기준일을 기반으로 만 나이를 계산합니다.
+   * 기준일이 제공되지 않으면 현재 날짜가 사용됩니다.
+   * @param birthDateString - 문자열 형식의 생년월일 (예: "1997-12-13").
+   * @param referenceDate - Date 또는 문자열 형식의 기준일. 제공되지 않으면 현재 날짜가 사용됩니다.
+   * @returns 계산된 만 나이.
+   */
+  readInternationalAge,
+  /**
+   * 주어진 생년월일 문자열과 선택적인 기준일을 기반으로 한국 나이를 계산합니다.
+   * @param birthDateString - 문자열 형식의 생년월일 (예: "1997-12-13").
+   * @param referenceDate - Date 또는 문자열 형식의 기준일. 제공되지 않으면 현재 날짜가 사용됩니다.
+   * @returns 계산된 한국 나이.
+   */
+  readKoreanAge,
+  /**
+   * 주어진 생년월일 문자열과 선택적인 기준일을 기반으로 연 나이를 계산합니다.
+   * @param birthDateString - 문자열 형식의 생년월일 (예: "1997-12-13").
+   * @param referenceDate - Date 또는 문자열 형식의 기준일. 제공되지 않으면 현재 날짜가 사용됩니다.
+   * @returns 계산된 연 나이.
+   */
+  readYearAge,
+};
 
 export default ageUtil;
