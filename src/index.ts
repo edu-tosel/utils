@@ -38,6 +38,7 @@ import unixTimestamp from "./unixTimestamp";
 import { removeDuplicates } from "./malicious";
 import levelUtil from "./level";
 import asyncUtils from "./async";
+import arrayUtils from "./array";
 const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
 export {
   ApiInterface,
@@ -94,4 +95,5 @@ export {
   ageUtil,
   levelUtil,
   asyncUtils,
+  arrayUtils,
 };
