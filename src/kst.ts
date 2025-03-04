@@ -1,22 +1,48 @@
-// referenced from edu-tosel/dooray:src/util/KST.ts (74349d52028b77b549d97af79599782050c9a62f)
-type Month = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-interface KST {
+export enum Month {
+  January = 1,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December,
+}
+
+export enum Day {
+  Sunday = 0,
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+}
+interface DateDetail {
+  timeZone: "+00:00" | "+09:00";
   month: Month;
   year: number;
   date: number;
-  day: number;
+  day: Day;
+}
+interface TimeDetail {
   hour: number;
   minute: number;
   second: number;
 }
+interface DateTimeDetail extends DateDetail, TimeDetail {}
+const KOREA_TIME_OFFSET = 9 * 60 * 60 * 1000;
 /**
  * @deprecated Use `readKstDayInfo` instead.
  */
-export function KST(date?: Date): KST {
+export function KST(date?: Date): DateTimeDetail {
   date = date ?? new Date();
-  const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-  const KST = new Date(utc + KR_TIME_DIFF);
+  const utcMilliseconds = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
+  const KST = new Date(utcMilliseconds + KOREA_TIME_OFFSET);
   const year = KST.getFullYear();
   const month = (KST.getMonth() + 1) as Month;
   const dateNumber = KST.getDate();
@@ -25,6 +51,7 @@ export function KST(date?: Date): KST {
   const minute = KST.getMinutes();
   const second = KST.getSeconds();
   return {
+    timeZone: "+09:00",
     year,
     month,
     date: dateNumber,
