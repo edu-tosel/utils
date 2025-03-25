@@ -13,6 +13,7 @@ import {
   createMapObject,
   createRecord,
   createGroup,
+  createGroupMap,
 } from "./createObject";
 import { isAllowedIpMiddleware } from "./expressAdminMiddleware";
 import getExpressLoggerRouter from "./expressLogger";
@@ -88,6 +89,7 @@ export {
   createMap,
   createRecord,
   createGroup,
+  createGroupMap,
   isAllowedIpMiddleware,
   range,
   idRangeByResultSetHeader,
