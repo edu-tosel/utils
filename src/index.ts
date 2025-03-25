@@ -7,6 +7,8 @@ import {
   fromApi,
   toApi,
 } from "./apiConverter";
+import arrayUtils from "./array";
+import asyncUtils from "./async";
 import catchAsyncErrors from "./catchAsyncErrors";
 import {
   createMap,
@@ -38,8 +40,6 @@ import {
 import unixTimestamp from "./unixTimestamp";
 import { removeDuplicates } from "./malicious";
 import levelUtil from "./level";
-import asyncUtils from "./async";
-import arrayUtils from "./array";
 const { toTimestamp, fromTimestamp, nowTimestamp } = unixTimestamp;
 export {
   ApiInterface,
